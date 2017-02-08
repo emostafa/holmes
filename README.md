@@ -16,6 +16,7 @@ The inspection tool loops through the directories in your home folder, counts
 different type of programming languages files.
 
 You should expect that looks like this:
+
     Inspecting your folders, please be patient...
     ('C', 6595)
     ('TypeScript', 5327)
