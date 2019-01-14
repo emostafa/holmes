@@ -1,16 +1,42 @@
 import os
 from collections import Counter
 
-class Inspector(object):
-    path = os.path.expanduser('~')
-    langs = ['Python', 'Ruby', 'Go', 'C++', 'C', 'Java', 'Rust', 'Javscript',
-            'Typescript', 'Kotlin', 'Shell', 'CSS', 'HTML', 'PHP', 'C#',
-            'JSON', 'YAML', 'Markdown', 'Dockerfile', 'Docker-compose',
-            'ELM']
-    stats = Counter(langs)
+class Inspector:
 
-    def __init__(self):
+    langs = [
+        'Python',
+        'Ruby',
+        'Go',
+        'Rust',
+        'C',
+        'C++',
+        'C#',
+        'Java',
+        'Kotlin',
+        'Scala',
+        'Javascript',
+        'Typescript',
+        'ELM',
+        'CSS',
+        'HTML',
+        'JSON',
+        'YAML',
+        'Markdown',
+        'Dockerfile',
+        'PHP',
+        'Shell',
+    ]
+
+    def __init__(self, path):
+        self.path = path
+
+        self.stats = Counter(self.langs)
         self.inspect_dir(self.path)
+
+    def get_file_extension(self, file_path):
+        p, ext = os.path.splitext(file_path)
+        filename = p.split('/')[-1]
+        return (filename, ext)
 
     def inspect_dir(self, path):
         files = os.listdir(path)
@@ -20,38 +46,47 @@ class Inspector(object):
                 if os.path.isdir(file_path):
                     self.inspect_dir(file_path)
                 else:
-                    if file_path.endswith('.py'):
+                    filename, ext = self.get_file_extension(file_path)
+                    if ext == '.py':
                         self.stats['Python'] += 1
-                    elif file_path.endswith('.rb'):
+                    elif ext == '.rb':
                         self.stats['Ruby'] += 1
-                    elif file_path.endswith('.go'):
+                    elif ext == '.go':
                         self.stats['Go'] += 1
-                    elif file_path.endswith('.cpp'):
+                    elif ext == '.cpp':
                         self.stats['C++'] += 1
-                    elif file_path.endswith('.c'):
+                    elif ext == '.c':
                         self.stats['C'] += 1
-                    elif file_path.endswith('.java'):
+                    elif ext == '.java':
                         self.stats['Java'] += 1
-                    elif file_path.endswith('.rs'):
-                        self.stats['Rust'] += 1
-                    elif file_path.endswith('.js'):
-                        self.stats['Javascript'] += 1
-                    elif file_path.endswith('.ts'):
-                        self.stats['TypeScript'] += 1
-                    elif file_path.endswith('.kotlin'):
+                    elif ext == '.kotlin':
                         self.stats['Kotlin'] += 1
-                    elif file_path.endswith('.sh'):
+                    elif ext == '.scala':
+                        self.stats['Scala'] += 1
+                    elif ext == '.rs':
+                        self.stats['Rust'] += 1
+                    elif ext == '.js':
+                        self.stats['Javascript'] += 1
+                    elif ext == '.ts':
+                        self.stats['TypeScript'] += 1
+                    elif ext == '.sh':
                         self.stats['Shell'] += 1
-                    elif file_path.endswith('.css'):
+                    elif ext in ['.css', '.scss']:
                         self.stats['CSS'] += 1
-                    elif file_path.endswith('.html') or file_path.endswith('.xhtml'):
+                    elif ext in ['.html', '.xhtml']:
                         self.stats['HTML'] += 1
-                    elif file_path.endswith('.php'):
+                    elif ext == '.php':
                         self.stats['PHP'] += 1
-                    elif file_path.endswith('.cs'):
+                    elif ext == '.cs':
                         self.stats['C#'] += 1
-                    elif file_path.endswith('.elm'):
+                    elif ext == '.elm':
                         self.stats['ELM'] += 1
+                    elif ext == '.json':
+                        self.stats['JSON'] += 1
+                    elif ext in ['.yaml', '.yml']:
+                        self.stats['YAML'] += 1
+                    elif filename == 'Dockerfile':
+                        self.stats['Dockerfile'] += 1
             except OSError:
                 pass
 
